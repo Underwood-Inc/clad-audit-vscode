@@ -1,5 +1,7 @@
 # CLAD Audit (VS Code / Cursor)
 
+<img width="3840" height="2160" alt="image" src="https://github.com/user-attachments/assets/20f0ce43-f218-4e19-a74c-3a04871a33b5" />
+
 Thin editor extension that runs the full [`@underwoodinc/clad-audit`](../clad-audit/) engine **in-process** and publishes findings as **Problems panel** entries and **inline squiggles** — same UX as ESLint or TypeScript diagnostics.
 
 ## Self-contained
