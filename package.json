@@ -1,0 +1,493 @@
+{
+  "name": "clad-audit-vscode",
+  "displayName": "CLAD Audit",
+  "description": "Inline CLAD tier and import-boundary diagnostics via @underwoodinc/clad-audit.",
+  "version": "0.5.11",
+  "private": true,
+  "publisher": "underwoodinc",
+  "license": "MIT",
+  "icon": "media/clad-audit.png",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Underwood-Inc/clad-audit-vscode.git"
+  },
+  "homepage": "https://github.com/Underwood-Inc/clad-audit-vscode#readme",
+  "bugs": {
+    "url": "https://github.com/Underwood-Inc/clad-audit-vscode/issues"
+  },
+  "engines": {
+    "vscode": "^1.92.0"
+  },
+  "categories": [
+    "Linters"
+  ],
+  "keywords": [
+    "clad",
+    "architecture",
+    "lint",
+    "tier"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true,
+      "description": "Reads workspace source for auditing. Creates .clad-audit.yaml only when you run Initialize Config and confirm — never automatically."
+    }
+  },
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "clad-audit",
+          "title": "CLAD Audit",
+          "icon": "media/clad.svg"
+        }
+      ]
+    },
+    "views": {
+      "clad-audit": [
+        {
+          "id": "clad-audit.findingsToolbar",
+          "name": "Explore",
+          "type": "webview",
+          "icon": "$(filter)"
+        },
+        {
+          "id": "clad-audit.findings",
+          "name": "Findings",
+          "icon": "$(layers)"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "clad-audit.initConfig",
+        "title": "Initialize Config",
+        "category": "CLAD",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "clad-audit.auditWorkspace",
+        "title": "Audit Workspace",
+        "category": "CLAD",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "clad-audit.auditFolder",
+        "title": "Audit CLAD Root for Folder",
+        "category": "CLAD",
+        "icon": "$(folder)"
+      },
+      {
+        "command": "clad-audit.clearDiagnostics",
+        "title": "Clear Diagnostics",
+        "category": "CLAD",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "clad-audit.showOutput",
+        "title": "Show Output",
+        "category": "CLAD",
+        "icon": "$(output)"
+      },
+      {
+        "command": "clad-audit.focusFindingsView",
+        "title": "Focus Findings View",
+        "category": "CLAD",
+        "icon": "$(layers)"
+      },
+      {
+        "command": "clad-audit.revealFinding",
+        "title": "Reveal Finding",
+        "category": "CLAD"
+      },
+      {
+        "command": "clad-audit.copyAdvice",
+        "title": "Copy Remediation Advice",
+        "category": "CLAD"
+      },
+      {
+        "command": "clad-audit.showRemediation",
+        "title": "Show Remediation Steps",
+        "category": "CLAD"
+      },
+      {
+        "command": "clad-audit.copyConfigException",
+        "title": "Copy Config Exception YAML",
+        "category": "CLAD"
+      },
+      {
+        "command": "clad-audit.filterFindings",
+        "title": "Filter Findings",
+        "category": "CLAD",
+        "icon": "$(search)"
+      },
+      {
+        "command": "clad-audit.clearFindingsFilter",
+        "title": "Clear Findings Filter",
+        "category": "CLAD",
+        "icon": "$(close)"
+      },
+      {
+        "command": "clad-audit.openFindingsExplorer",
+        "title": "Open Findings Explorer",
+        "category": "CLAD",
+        "icon": "$(open-preview)"
+      },
+      {
+        "command": "clad-audit.pickFindingsLayout",
+        "title": "Findings Layout…",
+        "category": "CLAD",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "clad-audit.setFindingsGroupBy",
+        "title": "Findings Layout…",
+        "category": "CLAD",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "clad-audit.setFindingsSortBy",
+        "title": "Sort Finding Groups…",
+        "category": "CLAD",
+        "icon": "$(sort-precedence)"
+      },
+      {
+        "command": "clad-audit.setFindingsNestedGroupBy",
+        "title": "Nested Grouping (Audit Root)…",
+        "category": "CLAD",
+        "icon": "$(type-hierarchy-sub)"
+      },
+      {
+        "command": "clad-audit.cycleFindingsGroupBy",
+        "title": "Findings Layout…",
+        "category": "CLAD",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "clad-audit.filterSyntaxHelp",
+        "title": "Filter Syntax Help",
+        "category": "CLAD",
+        "icon": "$(book)"
+      },
+      {
+        "command": "clad-audit.openFilterBuilder",
+        "title": "Filter Builder",
+        "category": "CLAD",
+        "icon": "$(filter-filled)"
+      },
+      {
+        "command": "clad-audit.openConfigure",
+        "title": "Findings Layout…",
+        "category": "CLAD",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "clad-audit.openAuditSettings",
+        "title": "CLAD Audit Settings…",
+        "category": "CLAD",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "clad-audit.openFindingsSettings",
+        "title": "CLAD Audit Settings…",
+        "category": "CLAD",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "clad-audit.auditWorkspaceWithFeedback",
+        "title": "Re-run CLAD Audit",
+        "category": "CLAD",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "clad-audit.clearDiagnosticsWithFeedback",
+        "title": "Clear All Findings",
+        "category": "CLAD",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "clad-audit.refreshFindingsView",
+        "title": "Refresh Findings Tree",
+        "category": "CLAD",
+        "icon": "$(sync)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "clad-audit.auditWorkspaceWithFeedback",
+          "when": "view == clad-audit.findings",
+          "group": "navigation@0"
+        },
+        {
+          "command": "clad-audit.filterFindings",
+          "when": "view == clad-audit.findings",
+          "group": "navigation@1"
+        },
+        {
+          "command": "clad-audit.clearFindingsFilter",
+          "when": "view == clad-audit.findings && cladAudit.findingsFilterActive",
+          "group": "navigation@2"
+        },
+        {
+          "command": "clad-audit.openFindingsExplorer",
+          "when": "view == clad-audit.findings",
+          "group": "navigation@3"
+        },
+        {
+          "command": "clad-audit.pickFindingsLayout",
+          "when": "view == clad-audit.findings",
+          "group": "navigation@4"
+        },
+        {
+          "command": "clad-audit.setFindingsSortBy",
+          "when": "view == clad-audit.findings",
+          "group": "navigation@5"
+        },
+        {
+          "command": "clad-audit.filterSyntaxHelp",
+          "when": "view == clad-audit.findings",
+          "group": "navigation@6"
+        },
+        {
+          "command": "clad-audit.openFilterBuilder",
+          "when": "view == clad-audit.findings",
+          "group": "navigation@6.5"
+        },
+        {
+          "command": "clad-audit.openAuditSettings",
+          "when": "view == clad-audit.findings",
+          "group": "navigation@7"
+        },
+        {
+          "command": "clad-audit.showOutput",
+          "when": "view == clad-audit.findings",
+          "group": "navigation@8"
+        },
+        {
+          "command": "clad-audit.clearDiagnosticsWithFeedback",
+          "when": "view == clad-audit.findings",
+          "group": "navigation@9"
+        },
+        {
+          "command": "clad-audit.initConfig",
+          "when": "view == clad-audit.findings",
+          "group": "1_clad@0"
+        },
+        {
+          "command": "clad-audit.auditWorkspaceWithFeedback",
+          "when": "view == clad-audit.findingsToolbar",
+          "group": "navigation@0"
+        },
+        {
+          "command": "clad-audit.openFindingsExplorer",
+          "when": "view == clad-audit.findingsToolbar",
+          "group": "navigation@1"
+        },
+        {
+          "command": "clad-audit.filterSyntaxHelp",
+          "when": "view == clad-audit.findingsToolbar",
+          "group": "navigation@2"
+        },
+        {
+          "command": "clad-audit.openFilterBuilder",
+          "when": "view == clad-audit.findingsToolbar",
+          "group": "navigation@2.5"
+        },
+        {
+          "command": "clad-audit.pickFindingsLayout",
+          "when": "view == clad-audit.findingsToolbar",
+          "group": "navigation@3"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "clad-audit.initConfig",
+          "when": "explorerResourceIsFolder",
+          "group": "clad-audit@0"
+        },
+        {
+          "command": "clad-audit.auditFolder",
+          "when": "explorerResourceIsFolder",
+          "group": "clad-audit@1"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "clad-audit.auditWorkspace",
+          "when": "editorTextFocus",
+          "group": "clad-audit@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "clad-audit.revealFinding",
+          "when": "false"
+        },
+        {
+          "command": "clad-audit.copyAdvice",
+          "when": "false"
+        },
+        {
+          "command": "clad-audit.showRemediation",
+          "when": "false"
+        },
+        {
+          "command": "clad-audit.copyConfigException",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "CLAD Audit",
+      "properties": {
+        "cladAudit.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Publish CLAD audit findings as editor diagnostics."
+        },
+        "cladAudit.runOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Re-run CLAD audit when a source file is saved."
+        },
+        "cladAudit.runOnOpen": {
+          "type": "boolean",
+          "default": true,
+          "description": "Run CLAD audit when a workspace containing .clad-audit.yaml is opened."
+        },
+        "cladAudit.debounceMs": {
+          "type": "number",
+          "default": 1500,
+          "minimum": 0,
+          "description": "Debounce delay (ms) before running audit after a save."
+        },
+        "cladAudit.depth": {
+          "type": "string",
+          "enum": [
+            "quick",
+            "standard",
+            "deep",
+            "exhaustive"
+          ],
+          "default": "standard",
+          "description": "Analysis depth passed to clad-audit (overrides config default when set)."
+        },
+        "cladAudit.configFileName": {
+          "type": "string",
+          "default": ".clad-audit.yaml",
+          "description": "Config file name searched upward from workspace folders."
+        },
+        "cladAudit.auditWithoutConfig": {
+          "type": "boolean",
+          "default": false,
+          "description": "When true, audit workspace folders even when no config file is found (generic CLAD defaults)."
+        },
+        "cladAudit.findings.groupBy": {
+          "type": "string",
+          "enum": ["severity", "rule", "tier", "file", "root"],
+          "default": "severity",
+          "enumDescriptions": [
+            "Errors / warnings / info, then file",
+            "Rule id (e.g. import-boundary), then file",
+            "CLAD tier (apps, views, …), then file",
+            "File path, then findings",
+            "Audit root folder, then nested grouping"
+          ],
+          "description": "Primary grouping for the CLAD Findings sidebar tree."
+        },
+        "cladAudit.findings.sortBy": {
+          "type": "string",
+          "enum": ["count-desc", "count-asc", "alpha", "severity"],
+          "default": "count-desc",
+          "description": "Sort order for group nodes at each tree level."
+        },
+        "cladAudit.findings.nestedGroupBy": {
+          "type": "string",
+          "enum": ["none", "rule", "tier", "severity", "file"],
+          "default": "rule",
+          "description": "When groupBy is root: nested buckets under each audit root before files."
+        },
+        "cladAudit.findings.defaultFilter": {
+          "type": "string",
+          "default": "",
+          "description": "Default filter query for the Findings sidebar (overridden by workspace session filter). See cladAudit.findings.filterSyntax."
+        },
+        "cladAudit.findings.showInfo": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include info-severity findings in the sidebar (errors/warnings always shown)."
+        },
+        "cladAudit.findings.collapseSingleChild": {
+          "type": "boolean",
+          "default": false,
+          "description": "When true, skip redundant single-child group folders (future)."
+        },
+        "cladAudit.findings.useProjectConfig": {
+          "type": "boolean",
+          "default": true,
+          "description": "Merge editor.findings from .clad-audit.yaml (extension-only block; ignored by the auditor)."
+        },
+        "cladAudit.findings.showToolbar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the Explore webview toolbar above Findings (filter + group controls)."
+        },
+        "cladAudit.findings.filterSyntax": {
+          "type": "string",
+          "default": "",
+          "description": "Custom help text for filter syntax (empty = built-in help)."
+        },
+        "cladAudit.findings.filterKeybindingHint": {
+          "type": "string",
+          "default": "Ctrl+Alt+L",
+          "description": "Display-only hint for the filter shortcut shown in UI copy (actual binding is in package.json keybindings)."
+        }
+      }
+    },
+    "configurationDefaults": {
+      "cladAudit.findings.groupBy": "severity"
+    },
+    "keybindings": [
+      {
+        "command": "clad-audit.filterFindings",
+        "key": "ctrl+alt+l",
+        "mac": "cmd+alt+l",
+        "when": "focusedView == clad-audit.findings || focusedView == clad-audit.findingsToolbar"
+      },
+      {
+        "command": "clad-audit.pickFindingsLayout",
+        "key": "ctrl+alt+g",
+        "mac": "cmd+alt+g",
+        "when": "focusedView == clad-audit.findings || focusedView == clad-audit.findingsToolbar"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "watch": "node scripts/build.mjs --watch",
+    "test": "vitest run",
+    "verify": "npm test && npm run build",
+    "prepare": "husky",
+    "vscode:prepublish": "npm run build",
+    "package:vsix": "npm run build && npx --yes @vscode/vsce package --no-dependencies -o clad-audit-vscode.vsix"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@commitlint/cli": "^21.0.1",
+    "@commitlint/config-conventional": "^21.0.1",
+    "@types/node": "^22.7.4",
+    "@types/vscode": "^1.92.0",
+    "@underwoodinc/clad-audit": "^0.5.3",
+    "@vscode/vsce": "^3.7.1",
+    "esbuild": "^0.25.0",
+    "husky": "^9.1.7",
+    "typescript": "^5.6.2",
+    "vitest": "^3.2.4",
+    "yaml": "^2.5.1"
+  }
+}
