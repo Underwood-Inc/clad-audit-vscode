@@ -2,7 +2,10 @@
 
 <img width="3840" height="2160" alt="image" src="https://github.com/user-attachments/assets/20f0ce43-f218-4e19-a74c-3a04871a33b5" />
 
-Thin editor extension that runs the full [`@underwoodinc/clad-audit`](../clad-audit/) engine **in-process** and publishes findings as **Problems panel** entries and **inline squiggles** — same UX as ESLint or TypeScript diagnostics.
+**Repository:** https://github.com/Underwood-Inc/clad-audit-vscode  
+**Marketplace:** https://marketplace.visualstudio.com/items?itemName=underwoodinc.clad-audit-vscode
+
+Thin editor extension that runs the full [`@underwoodinc/clad-audit`](https://github.com/Underwood-Inc/clad-audit) engine **in-process** and publishes findings as **Problems panel** entries and **inline squiggles** — same UX as ESLint or TypeScript diagnostics.
 
 ## Self-contained
 
@@ -11,14 +14,14 @@ The packaged **`.vsix` is fully self-contained** for anyone who installs it:
 | Included in the VSIX | Not required on the machine |
 |----------------------|-----------------------------|
 | Bundled `clad-audit` engine (rules, import graph, ts-morph, fast-glob, yaml, …) in `dist/extension.js` | `clad-audit` CLI |
-| All audit logic runs inside the extension host | `pnpm`, monorepo scripts, or `tools/clad-audit` |
-| Zero runtime `node_modules` | Separate `@underwoodinc/clad-audit` npm install |
+| All audit logic runs inside the extension host | Separate monorepo checkout or CLI install |
+| Zero runtime `node_modules` in the VSIX | Separate `@underwoodinc/clad-audit` npm install for end users |
 
 The extension does **not** shell out to scripts. It only reads **your project's** source tree and optional `.clad-audit.yaml`.
 
 **In your repo:** add `.clad-audit.yaml` when you need aliases, tier paths, or allowlists. No config → generic CLAD defaults apply when `cladAudit.auditWithoutConfig` is enabled.
 
-**To build the VSIX** (maintainers only): one command bundles extension + auditor source via esbuild — no separate `build:clad-audit` step.
+**To build the VSIX** (maintainers only): `npm run package:vsix` bundles extension + auditor via esbuild.
 
 ## Initialize config (smart presets)
 
@@ -68,34 +71,40 @@ Extension branding uses two assets under `media/`:
 
 To swap the Marketplace icon, replace `media/clad-audit.png` and rebuild the VSIX.
 
-From repo root:
+From a clone of this repository:
 
 ```powershell
-pnpm pack:clad-audit-vscode
-code --install-extension tools/clad-audit-vscode/clad-audit-vscode.vsix
+git clone https://github.com/Underwood-Inc/clad-audit-vscode.git
+cd clad-audit-vscode
+npm install
+npm run package:vsix
+code --install-extension clad-audit-vscode.vsix
 ```
 
 Cursor:
 
 ```powershell
-cursor --install-extension tools/clad-audit-vscode/clad-audit-vscode.vsix
+cursor --install-extension clad-audit-vscode.vsix
 ```
 
-Or: **Extensions** → **⋯** → **Install from VSIX…** → pick `tools/clad-audit-vscode/clad-audit-vscode.vsix`.
+Or: **Extensions** → **⋯** → **Install from VSIX…** → pick `clad-audit-vscode.vsix`.
 
 Reload the window. Open a workspace that contains `.clad-audit.yaml` (or enable `cladAudit.auditWithoutConfig`).
 
-**Dev without installing:** open `tools/clad-audit-vscode` and press **F5** (Extension Development Host).
+**Dev without installing:** clone this repo, run `npm install && npm run build`, and press **F5** (Extension Development Host).
 
 ## Development
 
 ```powershell
-cd tools/clad-audit-vscode
-pnpm install
-pnpm build
+git clone https://github.com/Underwood-Inc/clad-audit-vscode.git
+cd clad-audit-vscode
+npm install
+npm run build
 ```
 
-Press **F5** in VS Code/Cursor with `tools/clad-audit-vscode` as the opened folder to launch an Extension Development Host.
+Press **F5** in VS Code/Cursor with this folder open to launch an Extension Development Host.
+
+Auditor source: `@underwoodinc/clad-audit` from npm. For side-by-side work with the CLI repo, place [`clad-audit`](https://github.com/Underwood-Inc/clad-audit) as a sibling directory (`../clad-audit`) and rebuild — the bundler prefers that source tree when present.
 
 ## Settings
 
